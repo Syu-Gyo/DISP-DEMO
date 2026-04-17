@@ -25,7 +25,7 @@ function Landing() {
         <main className="landing-hero-center">
           <h1 className="hero-title-main">
             提案のすべてを、<br />
-            一つのプラットフォームで。000
+            一つのプラットフォームで。
           </h1>
           <p className="hero-subtitle-main">
             ヒアリング、AI自動レイアウト、見積データ連携から提案書抽出まで。<br />
