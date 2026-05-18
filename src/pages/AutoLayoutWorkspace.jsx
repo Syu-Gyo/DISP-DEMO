@@ -31,6 +31,39 @@ const MOCK_ESTIMATE_LINES = [
   "-------------------------------------------------------------",
   "合計金額                            ¥ 4,158,000",
   "============================================================="
+  "============================================================="
+];
+
+const LAYOUT_PATTERNS = [
+  {
+    title: 'バランス重視（標準）',
+    filter: 'none',
+    zones: []
+  },
+  {
+    title: 'コミュニケーション重視',
+    filter: 'grayscale(0.8) opacity(0.5)',
+    zones: [
+      { top: '30%', left: '35%', width: '50%', height: '45%', color: 'rgba(245, 158, 11, 0.4)', border: '#F59E0B', text: '交流エリア拡大' },
+      { top: '15%', left: '10%', width: '25%', height: '50%', color: 'rgba(59, 130, 246, 0.4)', border: '#3B82F6', text: '執務スペース' }
+    ]
+  },
+  {
+    title: '集中作業重視',
+    filter: 'grayscale(0.8) opacity(0.5)',
+    zones: [
+      { top: '10%', left: '60%', width: '25%', height: '70%', color: 'rgba(139, 92, 246, 0.4)', border: '#8B5CF6', text: '集中ブース群' },
+      { top: '20%', left: '15%', width: '40%', height: '40%', color: 'rgba(16, 185, 129, 0.4)', border: '#10B981', text: '執務スペース' }
+    ]
+  },
+  {
+    title: 'フリーアドレス最大化',
+    filter: 'grayscale(0.8) opacity(0.5)',
+    zones: [
+      { top: '30%', left: '10%', width: '75%', height: '50%', color: 'rgba(236, 72, 153, 0.4)', border: '#EC4899', text: '全面フリーアドレス' },
+      { top: '10%', left: '60%', width: '25%', height: '15%', color: 'rgba(245, 158, 11, 0.4)', border: '#F59E0B', text: 'カフェ' }
+    ]
+  }
 ];
 
 export default function AutoLayoutWorkspace() {
@@ -549,7 +582,7 @@ export default function AutoLayoutWorkspace() {
           <div style={{ width: '48px', height: '48px', border: '4px solid #F43F5E', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '1.5rem' }}></div>
           <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2.5rem', fontWeight: 700 }}>AI Generating Multiple Layouts...</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '900px' }}>
-            {[1, 2, 3, 4].map((_, idx) => (
+            {LAYOUT_PATTERNS.map((pattern, idx) => (
               <div key={idx} style={{ 
                 aspectRatio: '16/9', 
                 background: '#1E293B', 
@@ -565,7 +598,19 @@ export default function AutoLayoutWorkspace() {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: `hue-rotate(${idx * 45}deg) opacity(0.8)`, background: 'white' }} alt="generating..." />
+                <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: pattern.filter, background: 'white' }} alt="generating..." />
+                
+                {idx < visibleRezoningCount && pattern.zones.map((z, zIdx) => (
+                  <div key={zIdx} style={{
+                    position: 'absolute', top: z.top, left: z.left, width: z.width, height: z.height,
+                    background: z.color, border: `2px dashed ${z.border}`, borderRadius: '4px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: z.border, fontWeight: 700, fontSize: '0.85rem', textShadow: '0 0 2px white'
+                  }}>
+                    {z.text}
+                  </div>
+                ))}
+
                 {idx < visibleRezoningCount && <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>Pattern {String.fromCharCode(65 + idx)}</div>}
               </div>
             ))}
@@ -595,19 +640,27 @@ export default function AutoLayoutWorkspace() {
             {activeAction === 'rezoning' ? (
               <div style={{ padding: '2rem', background: '#F9FAFB' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
-                  {[1, 2, 3, 4].map((_, idx) => (
+                  {LAYOUT_PATTERNS.map((pattern, idx) => (
                     <div key={idx} style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', background: 'white', border: '1px solid #E5E7EB', position: 'relative', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor = '#F43F5E'} onMouseOut={e => e.currentTarget.style.borderColor = '#E5E7EB'}>
-                      <div style={{ aspectRatio: '16/9', background: '#F8FAFC', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: `hue-rotate(${idx * 45}deg)` }} alt={`pattern ${idx}`} />
+                      <div style={{ aspectRatio: '16/9', background: '#F8FAFC', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                        <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: pattern.filter }} alt={`pattern ${idx}`} />
+                        
+                        {pattern.zones.map((z, zIdx) => (
+                          <div key={zIdx} style={{
+                            position: 'absolute', top: z.top, left: z.left, width: z.width, height: z.height,
+                            background: z.color, border: `2px dashed ${z.border}`, borderRadius: '4px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            color: z.border, fontWeight: 700, fontSize: '0.8rem', textShadow: '0 0 2px white'
+                          }}>
+                            {z.text}
+                          </div>
+                        ))}
                       </div>
                       <div style={{ padding: '1rem', borderTop: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
                         <div>
                           <div style={{ fontSize: '1rem', color: '#1F2937', fontWeight: 700 }}>パターン {String.fromCharCode(65 + idx)}</div>
                           <div style={{ fontSize: '0.8rem', color: '#6B7280', marginTop: '0.2rem' }}>
-                            {idx === 0 && 'バランス重視（標準）'}
-                            {idx === 1 && 'コミュニケーション重視'}
-                            {idx === 2 && '集中作業重視'}
-                            {idx === 3 && 'フリーアドレス最大化'}
+                            {pattern.title}
                           </div>
                         </div>
                         <button style={{ background: idx === 0 ? '#10B981' : 'white', color: idx === 0 ? 'white' : '#4B5563', border: idx === 0 ? 'none' : '1px solid #D1D5DB', borderRadius: '4px', padding: '0.4rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>
