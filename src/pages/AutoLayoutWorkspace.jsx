@@ -136,7 +136,7 @@ export default function AutoLayoutWorkspace() {
               return;
             }
             if (container.scrollTop < container.scrollHeight - container.clientHeight) {
-              container.scrollTop += 1.5;
+              container.scrollTop += 3.5;
             } else {
               clearInterval(scrollInterval);
             }
@@ -555,6 +555,71 @@ export default function AutoLayoutWorkspace() {
                           <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
                             <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💡</div>
                             <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>心地よい照明</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* スライド4：ゾーニング計画 */}
+                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Zoning Plan</h2>
+                    <div style={{ width: '60px', height: '3px', background: '#10B981', marginBottom: '2rem' }}></div>
+                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+                      <div style={{ flex: 1 }}>
+                        <img src="/layout.png" alt="Zoning" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }} />
+                      </div>
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'center' }}>
+                        <div>
+                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#10B981" /> 効率的な動線設計</h3>
+                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>メイン通路を広く確保し、執務エリアとリフレッシュエリアへのアクセスを最適化。</p>
+                        </div>
+                        <div>
+                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#10B981" /> 拡張性を持たせたレイアウト</h3>
+                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>将来的な人員増加を見据え、フレキシブルに変更可能なフリーアドレス制を導入。</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* スライド5：スケジュール・費用 */}
+                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Schedule & Budget</h2>
+                    <div style={{ width: '60px', height: '3px', background: '#8B5CF6', marginBottom: '2rem' }}></div>
+                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <h3 style={{ fontSize: '1.25rem', color: '#111827', margin: 0 }}>導入スケジュール</h3>
+                        <div style={{ background: '#F9FAFB', padding: '1.5rem', borderRadius: '8px', border: '1px solid #E5E7EB', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}>
+                            <span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 6月上旬</span>
+                            <span style={{ color: '#6B7280' }}>最終図面確定・発注</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}>
+                            <span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 7月中旬</span>
+                            <span style={{ color: '#6B7280' }}>内装工事開始</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}>
+                            <span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 8月上旬</span>
+                            <span style={{ color: '#6B7280' }}>家具搬入・設置</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span style={{ fontWeight: 600, color: '#3B82F6' }}>2026年 8月末</span>
+                            <span style={{ color: '#3B82F6', fontWeight: 600 }}>運用開始（引き渡し）</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <h3 style={{ fontSize: '1.25rem', color: '#111827', margin: 0 }}>概算費用感</h3>
+                        <div style={{ background: '#111827', padding: '2rem', borderRadius: '8px', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                          <div style={{ fontSize: '1rem', color: '#9CA3AF', marginBottom: '0.5rem' }}>プロジェクト総額（税別）</div>
+                          <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#10B981', marginBottom: '1.5rem' }}>¥ 12,251,000</div>
+                          <div style={{ width: '100%', fontSize: '0.85rem', color: '#D1D5DB', display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #374151', paddingTop: '1rem' }}>
+                            <span>家具・什器費用</span>
+                            <span>¥ 11,251,000</span>
+                          </div>
+                          <div style={{ width: '100%', fontSize: '0.85rem', color: '#D1D5DB', display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                            <span>配送・施工費</span>
+                            <span>¥ 1,000,000</span>
                           </div>
                         </div>
                       </div>
