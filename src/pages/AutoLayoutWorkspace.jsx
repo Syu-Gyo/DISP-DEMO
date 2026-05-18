@@ -49,6 +49,7 @@ export default function AutoLayoutWorkspace() {
   const [showResultModal, setShowResultModal] = useState(false);
   const [selectedImageIndices, setSelectedImageIndices] = useState([]);
   const [visibleEstimateLines, setVisibleEstimateLines] = useState(0);
+  const [visiblePresenSlides, setVisiblePresenSlides] = useState(0);
 
   const handleAction = (actionType) => {
     setActiveAction(actionType);
@@ -89,10 +90,22 @@ export default function AutoLayoutWorkspace() {
         setShowResultModal(true);
       }, 4000);
     } else if (actionType === 'presen') {
+      setVisiblePresenSlides(0);
+      let count = 0;
+      const intervalId = setInterval(() => {
+        if (count < 5) {
+          count++;
+          setVisiblePresenSlides(count);
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 1000);
+
       setTimeout(() => {
+        clearInterval(intervalId);
         setIsActionProcessing(false);
         setShowResultModal(true);
-      }, 4500);
+      }, 6000);
     } else {
       setTimeout(() => {
         setIsActionProcessing(false);
@@ -146,6 +159,15 @@ export default function AutoLayoutWorkspace() {
     }
     return () => clearInterval(scrollInterval);
   }, [showResultModal, activeAction]);
+
+  useEffect(() => {
+    if (isActionProcessing && activeAction === 'presen') {
+      const container = document.getElementById('presen-generating-container');
+      if (container) {
+        container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
+      }
+    }
+  }, [visiblePresenSlides, isActionProcessing, activeAction]);
 
   if (!project) return <div style={{ padding: '2rem', textAlign: 'center' }}>読み込み中...</div>;
 
@@ -301,6 +323,116 @@ export default function AutoLayoutWorkspace() {
     </div>
   );
 
+  const renderPresenSlides = (count, isGenerating) => {
+    const slideStyle = {
+      flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', 
+      boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', 
+      overflow: 'hidden', aspectRatio: '16/9', display: 'flex', position: 'relative',
+      animation: isGenerating ? 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards' : 'none',
+      opacity: isGenerating ? 0 : 1
+    };
+
+    const slides = [
+      <div key="slide1" style={slideStyle}>
+        <div style={{ flex: 1, background: '#111827', padding: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: 'white' }}>
+          <div style={{ width: '40px', height: '4px', background: '#F59E0B', marginBottom: '1.5rem' }}></div>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 1rem 0', lineHeight: 1.2 }}>Office Layout<br/>Proposal</h1>
+          <p style={{ fontSize: '1.1rem', color: '#9CA3AF', margin: 0 }}>次世代の働き方を実現するオフィス空間設計</p>
+          <div style={{ marginTop: 'auto', fontSize: '0.85rem', color: '#6B7280' }}>
+            株式会社デンソー勝山 様<br/>
+            2026年5月18日
+          </div>
+        </div>
+        <div style={{ flex: 1.5, background: '#E5E7EB' }}>
+          <img src={MOCK_INTERIOR_IMAGES[0]} alt="Office Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+      </div>,
+      <div key="slide2" style={{ ...slideStyle, padding: '3rem', flexDirection: 'column' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Concept & Solutions</h2>
+        <div style={{ width: '60px', height: '3px', background: '#3B82F6', marginBottom: '2rem' }}></div>
+        <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#3B82F6" /> 偶発的なコミュニケーションの創出</h3>
+              <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>オープンなコミュニケーションスペースを執務室の中心に配置し、部門間の垣根を越えたアイデアの創出を促します。</p>
+            </div>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#3B82F6" /> Web会議・集中作業への対応</h3>
+              <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>防音性の高い個室ブース「CAP-CELL Lite」を複数配置し、オンライン会議や深い集中を要する業務を快適にサポートします。</p>
+            </div>
+          </div>
+          <div style={{ flex: 1 }}>
+            <img src={MOCK_INTERIOR_IMAGES[1]} alt="Communication Space" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+          </div>
+        </div>
+      </div>,
+      <div key="slide3" style={{ ...slideStyle, padding: '3rem', flexDirection: 'column' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Featured Product: 個室ブース</h2>
+        <div style={{ width: '60px', height: '3px', background: '#F59E0B', marginBottom: '2rem' }}></div>
+        <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+          <div style={{ flex: 1, background: '#F9FAFB', borderRadius: '8px', overflow: 'hidden', border: '1px solid #E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+             <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=600&q=80" alt="Booth" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <div style={{ flex: 1.2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <h3 style={{ fontSize: '1.5rem', color: '#111827', margin: '0 0 1rem 0' }}>"CAP-CELL Lite"</h3>
+            <p style={{ fontSize: '1rem', color: '#4B5563', lineHeight: 1.6, marginBottom: '2rem' }}>機能性・コンパクト性を重視したスマートなワークスポット。高い遮音性と快適な換気システムで、24時間快適に作業が可能です。</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}><div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔇</div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>高い遮音性</div></div>
+              <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}><div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💨</div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>24時間換気</div></div>
+              <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}><div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔌</div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>AC・USBポート完備</div></div>
+              <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}><div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💡</div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>心地よい照明</div></div>
+            </div>
+          </div>
+        </div>
+      </div>,
+      <div key="slide4" style={{ ...slideStyle, padding: '3rem', flexDirection: 'column' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Zoning Plan</h2>
+        <div style={{ width: '60px', height: '3px', background: '#10B981', marginBottom: '2rem' }}></div>
+        <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+          <div style={{ flex: 1 }}>
+            <img src="/layout.png" alt="Zoning" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }} />
+          </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'center' }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#10B981" /> 効率的な動線設計</h3>
+              <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>メイン通路を広く確保し、執務エリアとリフレッシュエリアへのアクセスを最適化。</p>
+            </div>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#10B981" /> 拡張性を持たせたレイアウト</h3>
+              <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>将来的な人員増加を見据え、フレキシブルに変更可能なフリーアドレス制を導入。</p>
+            </div>
+          </div>
+        </div>
+      </div>,
+      <div key="slide5" style={{ ...slideStyle, padding: '3rem', flexDirection: 'column' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Schedule & Budget</h2>
+        <div style={{ width: '60px', height: '3px', background: '#8B5CF6', marginBottom: '2rem' }}></div>
+        <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <h3 style={{ fontSize: '1.25rem', color: '#111827', margin: 0 }}>導入スケジュール</h3>
+            <div style={{ background: '#F9FAFB', padding: '1.5rem', borderRadius: '8px', border: '1px solid #E5E7EB', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}><span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 6月上旬</span><span style={{ color: '#6B7280' }}>最終図面確定・発注</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}><span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 7月中旬</span><span style={{ color: '#6B7280' }}>内装工事開始</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}><span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 8月上旬</span><span style={{ color: '#6B7280' }}>家具搬入・設置</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ fontWeight: 600, color: '#3B82F6' }}>2026年 8月末</span><span style={{ color: '#3B82F6', fontWeight: 600 }}>運用開始（引き渡し）</span></div>
+            </div>
+          </div>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <h3 style={{ fontSize: '1.25rem', color: '#111827', margin: 0 }}>概算費用感</h3>
+            <div style={{ background: '#111827', padding: '2rem', borderRadius: '8px', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+              <div style={{ fontSize: '1rem', color: '#9CA3AF', marginBottom: '0.5rem' }}>プロジェクト総額（税別）</div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#10B981', marginBottom: '1.5rem' }}>¥ 12,251,000</div>
+              <div style={{ width: '100%', fontSize: '0.85rem', color: '#D1D5DB', display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #374151', paddingTop: '1rem' }}><span>家具・什器費用</span><span>¥ 11,251,000</span></div>
+              <div style={{ width: '100%', fontSize: '0.85rem', color: '#D1D5DB', display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}><span>配送・施工費</span><span>¥ 1,000,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ];
+
+    return slides.slice(0, count);
+  };
+
   return (
     <div className="layout">
       <div className="layout-body">
@@ -339,45 +471,13 @@ export default function AutoLayoutWorkspace() {
 
       {/* プレゼン生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'presen' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '2rem', alignItems: 'center', justifyContent: 'center' }}>
+          <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
             <div style={{ width: '24px', height: '24px', border: '3px solid #F59E0B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-            AI Generating Presentation...
+            AI Generating Presentation... ({visiblePresenSlides}/5)
           </h2>
-          <div style={{ width: '100%', maxWidth: '700px', background: 'white', borderRadius: '8px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '400px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ animation: 'slideIn 0.5s ease-out forwards', opacity: 0 }}>
-              <h3 style={{ margin: 0, color: '#1E293B', fontSize: '1.25rem', fontWeight: 800 }}>Office Layout Proposal</h3>
-              <p style={{ margin: '0.25rem 0 0 0', color: '#64748B', fontSize: '0.875rem' }}>次世代の働き方を実現するオフィスデザインをご提案</p>
-            </div>
-            
-            <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem' }}>
-              <div style={{ flex: 1, animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards', opacity: 0 }}>
-                <img src={MOCK_INTERIOR_IMAGES[2]} alt="Concept" style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px' }} />
-                <div style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.5rem' }}>メインコンセプトパース図 挿入完了</div>
-              </div>
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingTop: '0.5rem' }}>
-                <div style={{ animation: 'slideIn 0.5s ease-out 1.2s forwards', opacity: 0, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <CheckCircle size={16} color="#10B981" /> <span style={{ fontSize: '0.9rem', color: '#334155' }}>コミュニケーションエリアの配置</span>
-                </div>
-                <div style={{ animation: 'slideIn 0.5s ease-out 1.4s forwards', opacity: 0, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <CheckCircle size={16} color="#10B981" /> <span style={{ fontSize: '0.9rem', color: '#334155' }}>集中ブース「CAP-CELL Lite」導入</span>
-                </div>
-                <div style={{ animation: 'slideIn 0.5s ease-out 1.6s forwards', opacity: 0, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <CheckCircle size={16} color="#10B981" /> <span style={{ fontSize: '0.9rem', color: '#334155' }}>自然光を活かした動線設計</span>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ width: '100%', height: '100px', background: '#F8FAFC', border: '1px dashed #CBD5E1', borderRadius: '8px', marginTop: '1rem', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.2s forwards', opacity: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#64748B', fontWeight: 600, fontSize: '0.9rem', gap: '0.5rem' }}>
-              <span>🎥 3Dウォークスルー動画を生成・マッピング中...</span>
-              <div style={{ width: '16px', height: '16px', border: '2px solid #64748B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-            </div>
-
-            <div style={{ fontSize: '0.85rem', color: '#94A3B8', marginTop: '1.5rem', animation: 'slideIn 0.5s ease-out 3.2s forwards', opacity: 0 }}>
-              AIによる文脈の最適化と、採用ファニチャーのスペック表を統合しています...
-            </div>
-            
-            <div style={{ width: '100%', height: '4px', background: '#38BDF8', borderRadius: '2px', position: 'absolute', bottom: 0, left: 0, animation: 'progressBar 4.5s linear forwards' }}></div>
+          <div id="presen-generating-container" style={{ width: '100%', maxWidth: '1000px', flex: 1, background: 'transparent', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem', overflowY: 'hidden', padding: '0 1rem', scrollBehavior: 'smooth' }}>
+            {renderPresenSlides(visiblePresenSlides, true)}
           </div>
         </div>
       )}
@@ -489,142 +589,7 @@ export default function AutoLayoutWorkspace() {
                   </div>
                 </div>
                 <div id="presen-scroll-container" style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem', scrollBehavior: 'smooth' }}>
-                  {/* スライド1：表紙 */}
-                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', display: 'flex', position: 'relative' }}>
-                    <div style={{ flex: 1, background: '#111827', padding: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: 'white' }}>
-                      <div style={{ width: '40px', height: '4px', background: '#F59E0B', marginBottom: '1.5rem' }}></div>
-                      <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 1rem 0', lineHeight: 1.2 }}>Office Layout<br/>Proposal</h1>
-                      <p style={{ fontSize: '1.1rem', color: '#9CA3AF', margin: 0 }}>次世代の働き方を実現するオフィス空間設計</p>
-                      <div style={{ marginTop: 'auto', fontSize: '0.85rem', color: '#6B7280' }}>
-                        株式会社デンソー勝山 様<br/>
-                        2026年5月18日
-                      </div>
-                    </div>
-                    <div style={{ flex: 1.5, background: '#E5E7EB' }}>
-                      <img src={MOCK_INTERIOR_IMAGES[0]} alt="Office Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                  </div>
-
-                  {/* スライド2：コンセプトと課題解決 */}
-                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Concept & Solutions</h2>
-                    <div style={{ width: '60px', height: '3px', background: '#3B82F6', marginBottom: '2rem' }}></div>
-                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                        <div>
-                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#3B82F6" /> 偶発的なコミュニケーションの創出</h3>
-                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>オープンなコミュニケーションスペースを執務室の中心に配置し、部門間の垣根を越えたアイデアの創出を促します。</p>
-                        </div>
-                        <div>
-                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#3B82F6" /> Web会議・集中作業への対応</h3>
-                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>防音性の高い個室ブース「CAP-CELL Lite」を複数配置し、オンライン会議や深い集中を要する業務を快適にサポートします。</p>
-                        </div>
-                      </div>
-                      <div style={{ flex: 1 }}>
-                        <img src={MOCK_INTERIOR_IMAGES[1]} alt="Communication Space" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* スライド3：プロダクトフォーカス（ユーザー添付画像を想定したレイアウト） */}
-                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Featured Product: 個室ブース</h2>
-                    <div style={{ width: '60px', height: '3px', background: '#F59E0B', marginBottom: '2rem' }}></div>
-                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
-                      <div style={{ flex: 1, background: '#F9FAFB', borderRadius: '8px', overflow: 'hidden', border: '1px solid #E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                         {/* CAP-CELL Liteっぽいモック画像 */}
-                         <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=600&q=80" alt="Booth" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      </div>
-                      <div style={{ flex: 1.2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                        <h3 style={{ fontSize: '1.5rem', color: '#111827', margin: '0 0 1rem 0' }}>"CAP-CELL Lite"</h3>
-                        <p style={{ fontSize: '1rem', color: '#4B5563', lineHeight: 1.6, marginBottom: '2rem' }}>機能性・コンパクト性を重視したスマートなワークスポット。高い遮音性と快適な換気システムで、24時間快適に作業が可能です。</p>
-                        
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔇</div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>高い遮音性</div>
-                          </div>
-                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💨</div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>24時間換気</div>
-                          </div>
-                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔌</div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>AC・USBポート完備</div>
-                          </div>
-                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
-                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💡</div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>心地よい照明</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* スライド4：ゾーニング計画 */}
-                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Zoning Plan</h2>
-                    <div style={{ width: '60px', height: '3px', background: '#10B981', marginBottom: '2rem' }}></div>
-                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
-                      <div style={{ flex: 1 }}>
-                        <img src="/layout.png" alt="Zoning" style={{ width: '100%', height: '100%', objectFit: 'contain', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }} />
-                      </div>
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'center' }}>
-                        <div>
-                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#10B981" /> 効率的な動線設計</h3>
-                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>メイン通路を広く確保し、執務エリアとリフレッシュエリアへのアクセスを最適化。</p>
-                        </div>
-                        <div>
-                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#10B981" /> 拡張性を持たせたレイアウト</h3>
-                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>将来的な人員増加を見据え、フレキシブルに変更可能なフリーアドレス制を導入。</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* スライド5：スケジュール・費用 */}
-                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Schedule & Budget</h2>
-                    <div style={{ width: '60px', height: '3px', background: '#8B5CF6', marginBottom: '2rem' }}></div>
-                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <h3 style={{ fontSize: '1.25rem', color: '#111827', margin: 0 }}>導入スケジュール</h3>
-                        <div style={{ background: '#F9FAFB', padding: '1.5rem', borderRadius: '8px', border: '1px solid #E5E7EB', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}>
-                            <span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 6月上旬</span>
-                            <span style={{ color: '#6B7280' }}>最終図面確定・発注</span>
-                          </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}>
-                            <span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 7月中旬</span>
-                            <span style={{ color: '#6B7280' }}>内装工事開始</span>
-                          </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E5E7EB', paddingBottom: '0.5rem' }}>
-                            <span style={{ fontWeight: 600, color: '#4B5563' }}>2026年 8月上旬</span>
-                            <span style={{ color: '#6B7280' }}>家具搬入・設置</span>
-                          </div>
-                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span style={{ fontWeight: 600, color: '#3B82F6' }}>2026年 8月末</span>
-                            <span style={{ color: '#3B82F6', fontWeight: 600 }}>運用開始（引き渡し）</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <h3 style={{ fontSize: '1.25rem', color: '#111827', margin: 0 }}>概算費用感</h3>
-                        <div style={{ background: '#111827', padding: '2rem', borderRadius: '8px', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                          <div style={{ fontSize: '1rem', color: '#9CA3AF', marginBottom: '0.5rem' }}>プロジェクト総額（税別）</div>
-                          <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#10B981', marginBottom: '1.5rem' }}>¥ 12,251,000</div>
-                          <div style={{ width: '100%', fontSize: '0.85rem', color: '#D1D5DB', display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #374151', paddingTop: '1rem' }}>
-                            <span>家具・什器費用</span>
-                            <span>¥ 11,251,000</span>
-                          </div>
-                          <div style={{ width: '100%', fontSize: '0.85rem', color: '#D1D5DB', display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem' }}>
-                            <span>配送・施工費</span>
-                            <span>¥ 1,000,000</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  {renderPresenSlides(5, false)}
                 </div>
               </div>
             ) : null}
