@@ -569,10 +569,33 @@ export default function AutoLayoutWorkspace() {
                   width: '100%', 
                   height: '100%', 
                   objectFit: 'contain', 
-                  filter: `hue-rotate(${idx * 45}deg) opacity(0.8)`, 
-                  background: 'white',
-                  transform: idx === 1 ? 'scaleX(-1)' : idx === 2 ? 'scaleY(-1)' : idx === 3 ? 'scale(-1, -1)' : 'none'
+                  background: 'white'
                 }} alt="generating..." />
+                
+                {/* 生成中アニメーション用 簡易家具モック */}
+                {idx === 1 && (
+                  <div style={{ position: 'absolute', top: '35%', left: '30%', width: '15%', height: '25%', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div style={{ flex: 1, background: '#D1D5DB', border: '1px solid #9CA3AF', borderRadius: '2px' }}></div>
+                    <div style={{ flex: 1, background: '#D1D5DB', border: '1px solid #9CA3AF', borderRadius: '2px' }}></div>
+                    <div style={{ flex: 1, background: '#D1D5DB', border: '1px solid #9CA3AF', borderRadius: '2px' }}></div>
+                  </div>
+                )}
+                {idx === 2 && (
+                  <div style={{ position: 'absolute', top: '40%', left: '40%', width: '20%', height: '20%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%' }}></div>
+                    <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%' }}></div>
+                    <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%' }}></div>
+                    <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%' }}></div>
+                  </div>
+                )}
+                {idx === 3 && (
+                  <div style={{ position: 'absolute', top: '25%', left: '50%', width: '25%', height: '10%', display: 'flex', gap: '6px' }}>
+                    <div style={{ flex: 1, background: '#93C5FD', border: '1px solid #60A5FA', borderRadius: '4px' }}></div>
+                    <div style={{ flex: 1, background: '#93C5FD', border: '1px solid #60A5FA', borderRadius: '4px' }}></div>
+                    <div style={{ flex: 1, background: '#93C5FD', border: '1px solid #60A5FA', borderRadius: '4px' }}></div>
+                  </div>
+                )}
+
                 {idx < visibleRezoningCount && <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>Pattern {String.fromCharCode(65 + idx)}</div>}
               </div>
             ))}
@@ -608,15 +631,32 @@ export default function AutoLayoutWorkspace() {
                         <img src="/layout.png" style={{ 
                           width: '100%', 
                           height: '100%', 
-                          objectFit: 'contain', 
-                          filter: `hue-rotate(${idx * 45}deg)`,
-                          transform: idx === 1 ? 'scaleX(-1)' : idx === 2 ? 'scaleY(-1)' : idx === 3 ? 'scale(-1, -1)' : 'none'
+                          objectFit: 'contain'
                         }} alt={`pattern ${idx}`} />
                         {/* 疑似的に位置を変えるための簡易的な家具モック（デモ用） */}
-                        {idx !== 0 && (
+                        {idx === 1 && (
+                          <div style={{ position: 'absolute', top: '35%', left: '30%', width: '15%', height: '25%', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                            <div style={{ flex: 1, background: '#D1D5DB', border: '1px solid #9CA3AF', borderRadius: '2px', opacity: 0.9 }}></div>
+                            <div style={{ flex: 1, background: '#D1D5DB', border: '1px solid #9CA3AF', borderRadius: '2px', opacity: 0.9 }}></div>
+                            <div style={{ flex: 1, background: '#D1D5DB', border: '1px solid #9CA3AF', borderRadius: '2px', opacity: 0.9 }}></div>
+                          </div>
+                        )}
+                        {idx === 2 && (
+                          <div style={{ position: 'absolute', top: '40%', left: '40%', width: '20%', height: '20%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                            <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%', opacity: 0.9 }}></div>
+                            <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%', opacity: 0.9 }}></div>
+                            <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%', opacity: 0.9 }}></div>
+                            <div style={{ background: '#FCA5A5', border: '1px solid #F87171', borderRadius: '50%', opacity: 0.9 }}></div>
+                          </div>
+                        )}
+                        {idx === 3 && (
                           <>
-                            <div style={{ position: 'absolute', top: idx === 1 ? '30%' : '50%', left: idx === 2 ? '30%' : '60%', width: '12%', height: '8%', background: '#FCD34D', border: '2px solid #F59E0B', borderRadius: '4px', transform: `rotate(${idx * 30}deg)`, opacity: 0.9 }}></div>
-                            <div style={{ position: 'absolute', top: idx === 3 ? '40%' : '70%', left: idx === 1 ? '70%' : '40%', width: '8%', height: '8%', background: '#93C5FD', border: '2px solid #3B82F6', borderRadius: '50%', transform: `rotate(${idx * -15}deg)`, opacity: 0.9 }}></div>
+                            <div style={{ position: 'absolute', top: '25%', left: '50%', width: '25%', height: '10%', display: 'flex', gap: '6px' }}>
+                              <div style={{ flex: 1, background: '#93C5FD', border: '1px solid #60A5FA', borderRadius: '4px', opacity: 0.9 }}></div>
+                              <div style={{ flex: 1, background: '#93C5FD', border: '1px solid #60A5FA', borderRadius: '4px', opacity: 0.9 }}></div>
+                              <div style={{ flex: 1, background: '#93C5FD', border: '1px solid #60A5FA', borderRadius: '4px', opacity: 0.9 }}></div>
+                            </div>
+                            <div style={{ position: 'absolute', top: '65%', left: '35%', width: '10%', height: '15%', background: '#FDE047', border: '1px solid #FACC15', borderRadius: '2px', opacity: 0.9, transform: 'rotate(15deg)' }}></div>
                           </>
                         )}
                       </div>
