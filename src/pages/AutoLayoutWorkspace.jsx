@@ -33,87 +33,6 @@ const MOCK_ESTIMATE_LINES = [
   "============================================================="
 ];
 
-const Desk = ({ top, left, width, height }) => (
-  <div style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: `${width}%`, height: `${height}%`, background: '#D4A373', borderRadius: '2px', boxShadow: '0 1px 2px rgba(0,0,0,0.2)' }}></div>
-);
-
-const Chair = ({ top, left }) => (
-  <div style={{ position: 'absolute', top: `${top}%`, left: `${left}%`, width: '12%', height: '8%', background: '#4B5563', borderRadius: '50%' }}></div>
-);
-
-const LayoutOverlay = ({ idx }) => {
-  if (idx === 0) return null; // A: Default original image
-
-  return (
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 10, pointerEvents: 'none' }}>
-      {/* Pink Mask (執務スペース) */}
-      <div style={{ position: 'absolute', top: '22%', left: '21.5%', width: '12.5%', height: '56%', background: '#FCE7F3', border: '1px solid #FBCFE8', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '2px', left: '2px', fontSize: '0.4rem', color: '#DB2777', fontWeight: 'bold', whiteSpace: 'nowrap' }}>執務スペース</div>
-        {idx === 1 && (
-          <>
-            <Desk top={20} left={20} width={60} height={15} />
-            <Chair top={15} left={30} /> <Chair top={15} left={60} />
-            <Chair top={37} left={30} /> <Chair top={37} left={60} />
-            <Desk top={65} left={20} width={60} height={15} />
-            <Chair top={60} left={30} /> <Chair top={60} left={60} />
-            <Chair top={82} left={30} /> <Chair top={82} left={60} />
-          </>
-        )}
-        {idx === 2 && (
-          <>
-            <Desk top={15} left={10} width={35} height={12} /> <Chair top={28} left={20} />
-            <Desk top={35} left={10} width={35} height={12} /> <Chair top={48} left={20} />
-            <Desk top={55} left={10} width={35} height={12} /> <Chair top={68} left={20} />
-            <Desk top={75} left={10} width={35} height={12} /> <Chair top={88} left={20} />
-            
-            <Desk top={15} left={55} width={35} height={12} /> <Chair top={28} left={65} />
-            <Desk top={35} left={55} width={35} height={12} /> <Chair top={48} left={65} />
-            <Desk top={55} left={55} width={35} height={12} /> <Chair top={68} left={65} />
-            <Desk top={75} left={55} width={35} height={12} /> <Chair top={88} left={65} />
-          </>
-        )}
-        {idx === 3 && (
-          <>
-            <Desk top={20} left={15} width={25} height={25} /> <Chair top={30} left={45} />
-            <Desk top={20} left={60} width={25} height={25} /> <Chair top={30} left={45} />
-            <Desk top={60} left={15} width={25} height={25} /> <Chair top={70} left={45} />
-            <Desk top={60} left={60} width={25} height={25} /> <Chair top={70} left={45} />
-          </>
-        )}
-      </div>
-
-      {/* Blue Mask (コミュニケーションスペース) */}
-      <div style={{ position: 'absolute', top: '18%', left: '37.5%', width: '13.5%', height: '62%', background: '#E0F2FE', border: '1px solid #BAE6FD', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '2px', left: '2px', fontSize: '0.4rem', color: '#0284C7', fontWeight: 'bold', whiteSpace: 'nowrap' }}>コミュニケーション</div>
-        {idx === 1 && (
-          <>
-            <div style={{ position: 'absolute', top: '40%', left: '35%', width: '30%', height: '20%', background: '#9CA3AF', borderRadius: '50%' }}></div>
-            <Chair top={30} left={45} />
-            <Chair top={62} left={45} />
-            <Chair top={46} left={20} />
-            <Chair top={46} left={70} />
-          </>
-        )}
-        {idx === 2 && (
-          <>
-            <div style={{ position: 'absolute', top: '25%', left: '25%', width: '20%', height: '15%', background: '#D1D5DB', borderRadius: '50%' }}></div>
-            <Chair top={20} left={30} /> <Chair top={42} left={30} />
-            <div style={{ position: 'absolute', top: '65%', left: '55%', width: '20%', height: '15%', background: '#D1D5DB', borderRadius: '50%' }}></div>
-            <Chair top={60} left={60} /> <Chair top={82} left={60} />
-          </>
-        )}
-        {idx === 3 && (
-          <>
-            <div style={{ position: 'absolute', top: '30%', left: '20%', width: '20%', height: '40%', background: '#60A5FA', borderRadius: '8px' }}></div>
-            <div style={{ position: 'absolute', top: '42%', left: '45%', width: '30%', height: '16%', background: '#D4A373', borderRadius: '4px' }}></div>
-            <div style={{ position: 'absolute', top: '30%', left: '80%', width: '15%', height: '40%', background: '#60A5FA', borderRadius: '8px' }}></div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
 export default function AutoLayoutWorkspace() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -532,6 +451,58 @@ export default function AutoLayoutWorkspace() {
     return slides.slice(0, count);
   };
 
+  const renderFakeFurniture = (idx) => {
+    if (idx === 0) return null; // Default
+
+    const desk = { background: '#8B5CF6', position: 'absolute', borderRadius: '2px', opacity: 0.9, border: '1px solid #7C3AED' };
+    const table = { background: '#F59E0B', position: 'absolute', borderRadius: '50%', opacity: 0.9, border: '1px solid #D97706' };
+    const pod = { background: '#10B981', position: 'absolute', borderRadius: '4px', opacity: 0.9, border: '1px solid #059669' };
+    const cover = { position: 'absolute', background: 'rgba(248, 250, 252, 0.9)', backdropFilter: 'blur(3px)' };
+
+    return (
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+        {/* Cover left pink zone */}
+        <div style={{ ...cover, top: '23%', left: '22%', width: '14%', height: '54%' }}></div>
+        {/* Cover right blue zone */}
+        <div style={{ ...cover, top: '19%', left: '38%', width: '16%', height: '62%' }}></div>
+
+        {idx === 1 && ( // Pattern B: コミュニケーション重視 (Round tables)
+          <>
+            <div style={{ ...table, top: '30%', left: '25%', width: '6%', aspectRatio: '1' }}></div>
+            <div style={{ ...table, top: '50%', left: '27%', width: '5%', aspectRatio: '1' }}></div>
+            <div style={{ ...table, top: '65%', left: '24%', width: '6%', aspectRatio: '1' }}></div>
+            
+            <div style={{ ...table, top: '25%', left: '42%', width: '8%', aspectRatio: '1' }}></div>
+            <div style={{ ...table, top: '50%', left: '45%', width: '7%', aspectRatio: '1' }}></div>
+            <div style={{ ...table, top: '70%', left: '40%', width: '9%', aspectRatio: '1' }}></div>
+          </>
+        )}
+        
+        {idx === 2 && ( // Pattern C: 集中作業重視 (Rows and pods)
+          <>
+            {[0, 1, 2, 3, 4].map(i => <div key={`d1-${i}`} style={{ ...desk, top: `${26 + i * 10}%`, left: '24%', width: '4%', height: '3%' }}></div>)}
+            {[0, 1, 2, 3, 4].map(i => <div key={`d2-${i}`} style={{ ...desk, top: `${26 + i * 10}%`, left: '30%', width: '4%', height: '3%' }}></div>)}
+            
+            {[0, 1, 2, 3].map(i => <div key={`p-${i}`} style={{ ...pod, top: `${25 + i * 13}%`, left: '42%', width: '5%', height: '5%' }}></div>)}
+            {[0, 1, 2, 3].map(i => <div key={`p2-${i}`} style={{ ...pod, top: `${25 + i * 13}%`, left: '48%', width: '5%', height: '5%' }}></div>)}
+          </>
+        )}
+
+        {idx === 3 && ( // Pattern D: フリーアドレス最大化 (Long collaborative desks)
+          <>
+            <div style={{ ...desk, top: '25%', left: '25%', width: '8%', height: '12%' }}></div>
+            <div style={{ ...desk, top: '45%', left: '25%', width: '8%', height: '12%' }}></div>
+            <div style={{ ...desk, top: '65%', left: '25%', width: '8%', height: '12%' }}></div>
+
+            <div style={{ ...desk, background: '#3B82F6', borderColor: '#2563EB', top: '22%', left: '41%', width: '10%', height: '8%' }}></div>
+            <div style={{ ...desk, background: '#3B82F6', borderColor: '#2563EB', top: '42%', left: '41%', width: '10%', height: '8%' }}></div>
+            <div style={{ ...desk, background: '#3B82F6', borderColor: '#2563EB', top: '62%', left: '41%', width: '10%', height: '8%' }}></div>
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="layout">
       <div className="layout-body">
@@ -646,11 +617,9 @@ export default function AutoLayoutWorkspace() {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <div style={{ position: 'relative', width: '100%', height: '100%', background: 'white' }}>
-                  <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'fill' }} alt="generating..." />
-                  {idx < visibleRezoningCount && <LayoutOverlay idx={idx} />}
-                </div>
-                {idx < visibleRezoningCount && <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600, zIndex: 20 }}>Pattern {String.fromCharCode(65 + idx)}</div>}
+                <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', background: 'white' }} alt="generating..." />
+                {renderFakeFurniture(idx)}
+                {idx < visibleRezoningCount && <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>Pattern {String.fromCharCode(65 + idx)}</div>}
               </div>
             ))}
           </div>
@@ -681,11 +650,9 @@ export default function AutoLayoutWorkspace() {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
                   {[1, 2, 3, 4].map((_, idx) => (
                     <div key={idx} style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', background: 'white', border: '1px solid #E5E7EB', position: 'relative', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor = '#F43F5E'} onMouseOut={e => e.currentTarget.style.borderColor = '#E5E7EB'}>
-                      <div style={{ aspectRatio: '16/9', background: '#F8FAFC', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div style={{ position: 'relative', width: '100%', height: '100%', background: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
-                          <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'fill' }} alt={`pattern ${idx}`} />
-                          <LayoutOverlay idx={idx} />
-                        </div>
+                      <div style={{ aspectRatio: '16/9', background: '#F8FAFC', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+                        <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt={`pattern ${idx}`} />
+                        {renderFakeFurniture(idx)}
                       </div>
                       <div style={{ padding: '1rem', borderTop: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
                         <div>
