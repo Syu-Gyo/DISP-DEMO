@@ -14,6 +14,20 @@ export default function AutoLayoutWorkspace() {
   const [dxfUploaded, setDxfUploaded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // 新規追加アクション用
+  const [activeAction, setActiveAction] = useState(null);
+  const [isActionProcessing, setIsActionProcessing] = useState(false);
+  const [showResultModal, setShowResultModal] = useState(false);
+
+  const handleAction = (actionType) => {
+    setActiveAction(actionType);
+    setIsActionProcessing(true);
+    setTimeout(() => {
+      setIsActionProcessing(false);
+      setShowResultModal(true);
+    }, 2000);
+  };
+
   useEffect(() => {
     const saved = localStorage.getItem('teian_projects');
     if (saved) {
@@ -175,10 +189,13 @@ export default function AutoLayoutWorkspace() {
 
       <div className="alw-bottom-actions">
         <button className="alw-btn-outline" onClick={() => setStep(1)}>再ゾーニング</button>
-        <button className="alw-btn-outline">再生成</button>
-        <button className="alw-btn-outline">一部を再生成</button>
-        <button className="alw-btn-green">DXF書き出し</button>
-        <button className="alw-btn-green">製品書き出し</button>
+        
+        <button className="alw-btn-green" onClick={() => handleAction('presen')}>プレゼン生成</button>
+        <button className="alw-btn-green" onClick={() => handleAction('estimate')}>概算見積り出力</button>
+        <button className="alw-btn-green" onClick={() => handleAction('image')}>イメージ画像生成</button>
+        
+        <button className="alw-btn-outline">DXF書き出し</button>
+        <button className="alw-btn-outline">製品書き出し</button>
       </div>
     </div>
   );
@@ -215,6 +232,58 @@ export default function AutoLayoutWorkspace() {
           <div style={{ width: '48px', height: '48px', border: '4px solid #FFF', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
           <div style={{ color: 'white', fontWeight: 700, letterSpacing: '0.2em' }}>
             AI AUTOMATIC ZONING...
+          </div>
+        </div>
+      )}
+
+      {/* 追加アクション処理中オーバーレイ */}
+      {isActionProcessing && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)', zIndex: 1100, display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ width: '48px', height: '48px', border: '4px solid #FFF', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+          <div style={{ color: 'white', fontWeight: 700, letterSpacing: '0.1em' }}>
+            {activeAction === 'presen' && 'プレゼンテーション資料を生成中...'}
+            {activeAction === 'estimate' && '概算見積りデータを集計中...'}
+            {activeAction === 'image' && '3Dイメージ画像をレンダリング中...'}
+          </div>
+        </div>
+      )}
+
+      {/* 結果モーダル */}
+      {showResultModal && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.6)', zIndex: 1200, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+          <div style={{ background: 'white', borderRadius: '12px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+            <div style={{ padding: '1.5rem', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>
+                {activeAction === 'presen' && '生成完了：プレゼンテーション資料'}
+                {activeAction === 'estimate' && '生成完了：概算見積書'}
+                {activeAction === 'image' && '生成完了：3Dイメージ画像'}
+              </h2>
+              <button 
+                onClick={() => setShowResultModal(false)}
+                style={{ background: 'transparent', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#6B7280' }}
+              >
+                &times;
+              </button>
+            </div>
+            <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', background: '#F9FAFB' }}>
+              <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>
+                {activeAction === 'presen' && '📊'}
+                {activeAction === 'estimate' && '💴'}
+                {activeAction === 'image' && '🖼️'}
+              </div>
+              <h3 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
+                {activeAction === 'presen' && '提案用プレゼン資料（PPTX形式）が生成されました'}
+                {activeAction === 'estimate' && '概算見積書（PDF/Excel形式）が生成されました'}
+                {activeAction === 'image' && '高画質3Dパース画像（JPG形式）が生成されました'}
+              </h3>
+              <p style={{ color: '#6B7280', marginBottom: '2rem' }}>※これはデモ画面です。本番環境ではここにプレビューやダウンロードボタンが表示されます。</p>
+              <button 
+                onClick={() => setShowResultModal(false)}
+                style={{ background: '#10B981', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
+              >
+                閉じる
+              </button>
+            </div>
           </div>
         </div>
       )}

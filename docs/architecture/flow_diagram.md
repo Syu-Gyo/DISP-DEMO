@@ -1,55 +1,40 @@
-# 業務フロー図（全体プロセスマップ）
-
-## 1. 提案DXプラットフォーム 全体ワークフロー
-
-本システムにおける、「ヒアリング〜自動レイアウト〜資料抽出」までの一連のユーザー体験のフローを示します。
+# Flow Diagram (UI and Workflow)
 
 ```mermaid
 flowchart TD
-    subgraph createProject [1. 案件作成と要件定義]
-        Start[新規案件作成] --> InputInfo[基本情報・ヒアリングフォーム入力]
-        InputInfo --> SaveQA[回答を保存して案件作成完了]
+    subgraph auth [Authentication]
+        A(Landing Page /) --> B(Login /login)
+        A --> C(Register /register)
+        B --> D{Authenticated}
+        C --> D
     end
 
-    subgraph assignEstimate [2. 見積データ連携]
-        SaveQA --> LinkCSV[案件にS3上の見積CSVを連携]
-        LinkCSV --> Preview[見積リストとしてプレビュー]
+    subgraph dashboard [Dashboard & Questionnaire]
+        D -->|navigate| E(Dashboard /dashboard)
+        
+        E -->|Click: 新規作成| F[Create Modal]
+        F -->|Input Name & Agree| G(Questionnaire /questionnaire)
+        E -->|Click: 開く| G
+        
+        G -->|Answer Q1, Q15| H[Finish Confirmation]
+        H -->|Click: 完了して保存| I[Completion Dialog]
     end
 
-    subgraph runLayout [3. 自動レイアウト設計]
-        SaveQA --> AutoLayout[自動レイアウト作業画面へ]
-        AutoLayout --> UploadDXF[CADデータ DXF アップロード]
-        UploadDXF --> RunZoning[AI 自動ゾーニング実行]
-        RunZoning --> CheckResult[配置された家具と図面結果の確認]
+    subgraph autolayout [Auto Layout Workflows]
+        I -->|Click: ホームへ戻る| E
+        I -->|Click: 自動レイアウトへ進む| J(AutoLayout List /auto-layout)
+        
+        E -->|Sidebar Click| J
+        
+        J -->|Click: 新規作成| K[Explanation & Notice Dialog]
+        K -->|Click: 新規作成| L(AutoLayout Workspace /auto-layout/:id)
+        
+        J -->|Click: 開く| L
+        L -->|Upload DXF| M[DXF Uploaded State]
+        M -->|Click: ゾーニング設定画面| N[AI Processing Mock]
+        N --> O[Workspace - Result Screen]
+        O -->|Click: プレゼン生成| P[Presentation Generation Mock]
+        O -->|Click: 概算見積り出力| Q[Estimate Generation Mock]
+        O -->|Click: イメージ画像生成| R[Image Generation Mock]
     end
-
-    subgraph extractDocs [4. 提出資料 自動抽出]
-        LinkCSV --> ExtractStart[提案資料 抽出・結合実行]
-        ExtractStart --> MergePDF[PDF / PPTX一括ダウンロード]
-    end
-    
-    CheckResult --> End[顧客へ提案資料および図面を提出]
-    MergePDF --> End
-```
-
-## 2. 画面遷移フロー
-
-各種画面のアクションからの遷移関係です。
-
-```mermaid
-flowchart LR
-    subgraph Dashboard [ヒアリングフォーム一覧]
-        Card[案件カード] -->|開く| Questionnaire[ヒアリング回答画面]
-        Card -->|レイアウト| AutoLayoutWorkspace[自動レイアウト作業画面]
-        Card -->|クリック| Details[右サイドバー詳細パネル表示]
-    end
-
-    subgraph AutoLayoutList [自動レイアウト管理]
-        List[レイアウト一覧表] -->|開く| AutoLayoutWorkspace
-    end
-
-    Questionnaire -->|保存| Dashboard
-    Questionnaire -->|保存即レイアウト| AutoLayoutWorkspace
-    
-    AutoLayoutWorkspace -->|戻る| Dashboard
 ```
