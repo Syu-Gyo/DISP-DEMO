@@ -317,22 +317,38 @@ export default function AutoLayoutWorkspace() {
             AI Generating Presentation...
           </h2>
           <div style={{ width: '100%', maxWidth: '700px', background: 'white', borderRadius: '8px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '400px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)', overflow: 'hidden', position: 'relative' }}>
-            <div style={{ width: '60%', height: '24px', background: '#E2E8F0', borderRadius: '4px', animation: 'slideIn 0.5s ease-out forwards', opacity: 0 }}></div>
-            <div style={{ width: '80%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 0.3s forwards', opacity: 0 }}></div>
-            <div style={{ width: '70%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 0.6s forwards', opacity: 0 }}></div>
+            <div style={{ animation: 'slideIn 0.5s ease-out forwards', opacity: 0 }}>
+              <h3 style={{ margin: 0, color: '#1E293B', fontSize: '1.25rem', fontWeight: 800 }}>Office Layout Proposal</h3>
+              <p style={{ margin: '0.25rem 0 0 0', color: '#64748B', fontSize: '0.875rem' }}>次世代の働き方を実現するオフィスデザインをご提案</p>
+            </div>
             
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-              <div style={{ flex: 1, height: '150px', background: '#E2E8F0', borderRadius: '8px', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards', opacity: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#94A3B8', fontWeight: 'bold' }}>🖼️ Image Inserted</div>
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{ width: '100%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 1.2s forwards', opacity: 0 }}></div>
-                <div style={{ width: '90%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 1.4s forwards', opacity: 0 }}></div>
-                <div style={{ width: '95%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 1.6s forwards', opacity: 0 }}></div>
+            <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem' }}>
+              <div style={{ flex: 1, animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards', opacity: 0 }}>
+                <img src={MOCK_INTERIOR_IMAGES[2]} alt="Concept" style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px' }} />
+                <div style={{ textAlign: 'center', fontSize: '0.75rem', color: '#94A3B8', marginTop: '0.5rem' }}>メインコンセプトパース図 挿入完了</div>
+              </div>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingTop: '0.5rem' }}>
+                <div style={{ animation: 'slideIn 0.5s ease-out 1.2s forwards', opacity: 0, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <CheckCircle size={16} color="#10B981" /> <span style={{ fontSize: '0.9rem', color: '#334155' }}>コミュニケーションエリアの配置</span>
+                </div>
+                <div style={{ animation: 'slideIn 0.5s ease-out 1.4s forwards', opacity: 0, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <CheckCircle size={16} color="#10B981" /> <span style={{ fontSize: '0.9rem', color: '#334155' }}>集中ブース「CAP-CELL Lite」導入</span>
+                </div>
+                <div style={{ animation: 'slideIn 0.5s ease-out 1.6s forwards', opacity: 0, display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <CheckCircle size={16} color="#10B981" /> <span style={{ fontSize: '0.9rem', color: '#334155' }}>自然光を活かした動線設計</span>
+                </div>
               </div>
             </div>
 
-            <div style={{ width: '100%', height: '100px', background: '#E2E8F0', borderRadius: '8px', marginTop: '1rem', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2s forwards', opacity: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#94A3B8', fontWeight: 'bold' }}>🎥 Video / 3D Walkthrough Inserted</div>
+            <div style={{ width: '100%', height: '100px', background: '#F8FAFC', border: '1px dashed #CBD5E1', borderRadius: '8px', marginTop: '1rem', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2.2s forwards', opacity: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#64748B', fontWeight: 600, fontSize: '0.9rem', gap: '0.5rem' }}>
+              <span>🎥 3Dウォークスルー動画を生成・マッピング中...</span>
+              <div style={{ width: '16px', height: '16px', border: '2px solid #64748B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+            </div>
 
-            <div style={{ width: '50%', height: '16px', background: '#F1F5F9', borderRadius: '4px', marginTop: '1rem', animation: 'slideIn 0.5s ease-out 2.5s forwards', opacity: 0 }}></div>
+            <div style={{ fontSize: '0.85rem', color: '#94A3B8', marginTop: '1.5rem', animation: 'slideIn 0.5s ease-out 3.2s forwards', opacity: 0 }}>
+              AIによる文脈の最適化と、採用ファニチャーのスペック表を統合しています...
+            </div>
+            
             <div style={{ width: '100%', height: '4px', background: '#38BDF8', borderRadius: '2px', position: 'absolute', bottom: 0, left: 0, animation: 'progressBar 4.5s linear forwards' }}></div>
           </div>
         </div>
@@ -445,13 +461,76 @@ export default function AutoLayoutWorkspace() {
                   </div>
                 </div>
                 <div style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
-                  {/* スライド1枚目 */}
-                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden' }}>
-                    <img src="/presen_mock.png" alt="プレゼン資料" style={{ width: '100%', display: 'block', minHeight: '400px', objectFit: 'cover' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80'; }} />
+                  {/* スライド1：表紙 */}
+                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', display: 'flex', position: 'relative' }}>
+                    <div style={{ flex: 1, background: '#111827', padding: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: 'white' }}>
+                      <div style={{ width: '40px', height: '4px', background: '#F59E0B', marginBottom: '1.5rem' }}></div>
+                      <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 1rem 0', lineHeight: 1.2 }}>Office Layout<br/>Proposal</h1>
+                      <p style={{ fontSize: '1.1rem', color: '#9CA3AF', margin: 0 }}>次世代の働き方を実現するオフィス空間設計</p>
+                      <div style={{ marginTop: 'auto', fontSize: '0.85rem', color: '#6B7280' }}>
+                        株式会社デンソー勝山 様<br/>
+                        2026年5月18日
+                      </div>
+                    </div>
+                    <div style={{ flex: 1.5, background: '#E5E7EB' }}>
+                      <img src={MOCK_INTERIOR_IMAGES[0]} alt="Office Cover" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
                   </div>
-                  {/* スライド2枚目ダミー */}
-                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#9ca3af', fontSize: '1.5rem', fontWeight: 'bold' }}>
-                    Slide 2 ...
+
+                  {/* スライド2：コンセプトと課題解決 */}
+                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Concept & Solutions</h2>
+                    <div style={{ width: '60px', height: '3px', background: '#3B82F6', marginBottom: '2rem' }}></div>
+                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        <div>
+                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#3B82F6" /> 偶発的なコミュニケーションの創出</h3>
+                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>オープンなコミュニケーションスペースを執務室の中心に配置し、部門間の垣根を越えたアイデアの創出を促します。</p>
+                        </div>
+                        <div>
+                          <h3 style={{ fontSize: '1.1rem', color: '#374151', margin: '0 0 0.5rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={20} color="#3B82F6" /> Web会議・集中作業への対応</h3>
+                          <p style={{ fontSize: '0.9rem', color: '#6B7280', lineHeight: 1.6, margin: 0 }}>防音性の高い個室ブース「CAP-CELL Lite」を複数配置し、オンライン会議や深い集中を要する業務を快適にサポートします。</p>
+                        </div>
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <img src={MOCK_INTERIOR_IMAGES[1]} alt="Communication Space" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* スライド3：プロダクトフォーカス（ユーザー添付画像を想定したレイアウト） */}
+                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Featured Product: 個室ブース</h2>
+                    <div style={{ width: '60px', height: '3px', background: '#F59E0B', marginBottom: '2rem' }}></div>
+                    <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
+                      <div style={{ flex: 1, background: '#F9FAFB', borderRadius: '8px', overflow: 'hidden', border: '1px solid #E5E7EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                         {/* CAP-CELL Liteっぽいモック画像 */}
+                         <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=600&q=80" alt="Booth" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                      <div style={{ flex: 1.2, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        <h3 style={{ fontSize: '1.5rem', color: '#111827', margin: '0 0 1rem 0' }}>"CAP-CELL Lite"</h3>
+                        <p style={{ fontSize: '1rem', color: '#4B5563', lineHeight: 1.6, marginBottom: '2rem' }}>機能性・コンパクト性を重視したスマートなワークスポット。高い遮音性と快適な換気システムで、24時間快適に作業が可能です。</p>
+                        
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔇</div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>高い遮音性</div>
+                          </div>
+                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💨</div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>24時間換気</div>
+                          </div>
+                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🔌</div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>AC・USBポート完備</div>
+                          </div>
+                          <div style={{ background: '#F3F4F6', padding: '1rem', borderRadius: '6px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>💡</div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#374151' }}>心地よい照明</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
