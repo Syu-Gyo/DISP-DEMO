@@ -489,12 +489,14 @@ export default function AutoLayoutWorkspace() {
 
       {/* プレゼン生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'presen' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '2rem', alignItems: 'center', justifyContent: 'center' }}>
-          <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 }}>
-            <div style={{ width: '24px', height: '24px', border: '3px solid #F59E0B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-            AI Generating Presentation... ({visiblePresenSlides}/5)
-          </h2>
-          <div id="presen-generating-container" style={{ width: '100%', maxWidth: '1000px', flex: 1, background: 'transparent', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem', overflowY: 'hidden', padding: '0 1rem', scrollBehavior: 'smooth' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ padding: '3rem 2rem 2rem 2rem', flexShrink: 0, width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <h2 style={{ color: 'white', letterSpacing: '0.1em', margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ width: '24px', height: '24px', border: '3px solid #F59E0B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+              AI Generating Presentation... ({visiblePresenSlides}/5)
+            </h2>
+          </div>
+          <div id="presen-generating-container" style={{ width: '100%', maxWidth: '1000px', flex: 1, background: 'transparent', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem', overflowY: 'hidden', padding: '0 1rem 3rem 1rem', scrollBehavior: 'smooth' }}>
             {renderPresenSlides(visiblePresenSlides, true)}
           </div>
         </div>
