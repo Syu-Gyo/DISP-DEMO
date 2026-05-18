@@ -119,6 +119,34 @@ export default function AutoLayoutWorkspace() {
     }
   }, [id]);
 
+  useEffect(() => {
+    let scrollInterval;
+    if (showResultModal && activeAction === 'presen') {
+      const container = document.getElementById('presen-scroll-container');
+      if (container) {
+        let isUserScrolling = false;
+        const stopScroll = () => { isUserScrolling = true; };
+        container.addEventListener('wheel', stopScroll, { passive: true });
+        container.addEventListener('touchstart', stopScroll, { passive: true });
+
+        setTimeout(() => {
+          scrollInterval = setInterval(() => {
+            if (isUserScrolling) {
+              clearInterval(scrollInterval);
+              return;
+            }
+            if (container.scrollTop < container.scrollHeight - container.clientHeight) {
+              container.scrollTop += 1.5;
+            } else {
+              clearInterval(scrollInterval);
+            }
+          }, 20);
+        }, 1500);
+      }
+    }
+    return () => clearInterval(scrollInterval);
+  }, [showResultModal, activeAction]);
+
   if (!project) return <div style={{ padding: '2rem', textAlign: 'center' }}>読み込み中...</div>;
 
   const handleUploadDxf = () => {
@@ -460,9 +488,9 @@ export default function AutoLayoutWorkspace() {
                     <button style={{ background: '#F59E0B', color: 'white', border: 'none', padding: '0.4rem 1.5rem', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}>ダウンロード</button>
                   </div>
                 </div>
-                <div style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
+                <div id="presen-scroll-container" style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem', scrollBehavior: 'smooth' }}>
                   {/* スライド1：表紙 */}
-                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', display: 'flex', position: 'relative' }}>
+                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', display: 'flex', position: 'relative' }}>
                     <div style={{ flex: 1, background: '#111827', padding: '4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', color: 'white' }}>
                       <div style={{ width: '40px', height: '4px', background: '#F59E0B', marginBottom: '1.5rem' }}></div>
                       <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0 0 1rem 0', lineHeight: 1.2 }}>Office Layout<br/>Proposal</h1>
@@ -478,7 +506,7 @@ export default function AutoLayoutWorkspace() {
                   </div>
 
                   {/* スライド2：コンセプトと課題解決 */}
-                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
                     <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Concept & Solutions</h2>
                     <div style={{ width: '60px', height: '3px', background: '#3B82F6', marginBottom: '2rem' }}></div>
                     <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
@@ -499,7 +527,7 @@ export default function AutoLayoutWorkspace() {
                   </div>
 
                   {/* スライド3：プロダクトフォーカス（ユーザー添付画像を想定したレイアウト） */}
-                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ flexShrink: 0, width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden', aspectRatio: '16/9', padding: '3rem', display: 'flex', flexDirection: 'column' }}>
                     <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1F2937', margin: '0 0 0.5rem 0' }}>Featured Product: 個室ブース</h2>
                     <div style={{ width: '60px', height: '3px', background: '#F59E0B', marginBottom: '2rem' }}></div>
                     <div style={{ display: 'flex', gap: '2rem', flex: 1 }}>
