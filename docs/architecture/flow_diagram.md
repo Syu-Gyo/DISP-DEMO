@@ -36,5 +36,6 @@ flowchart TD
         O -->|Click: プレゼン生成| P[Presentation Generation Mock]
         O -->|Click: 概算見積り出力| Q[Estimate Generation Mock]
         O -->|Click: イメージ画像生成| R[Image Generation Mock]
+        O -->|Click: 再ゾーニング| S[Rezoning Generation Mock]
     end
 ```

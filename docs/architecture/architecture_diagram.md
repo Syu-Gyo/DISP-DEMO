@@ -16,6 +16,7 @@ architecture-beta
     service ai_presen [AI Presentation Mock] in backend
     service ai_estimate [AI Estimate Mock] in backend
     service ai_image [AI Image Mock] in backend
+    service ai_rezoning [AI Rezoning Mock] in backend
     
     router -- ui : Routes
     ui -- state : State Management
@@ -27,4 +28,5 @@ architecture-beta
     api -- ai_presen : Generate Presen
     api -- ai_estimate : Generate Estimate
     api -- ai_image : Generate Image
+    api -- ai_rezoning : Generate Rezoning
 ```
