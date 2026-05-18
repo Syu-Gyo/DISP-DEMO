@@ -50,6 +50,7 @@ export default function AutoLayoutWorkspace() {
   const [selectedImageIndices, setSelectedImageIndices] = useState([]);
   const [visibleEstimateLines, setVisibleEstimateLines] = useState(0);
   const [visiblePresenSlides, setVisiblePresenSlides] = useState(0);
+  const [visibleRezoningCount, setVisibleRezoningCount] = useState(0);
 
   const handleAction = (actionType) => {
     setActiveAction(actionType);
@@ -106,6 +107,23 @@ export default function AutoLayoutWorkspace() {
         setIsActionProcessing(false);
         setShowResultModal(true);
       }, 6000);
+    } else if (actionType === 'rezoning') {
+      setVisibleRezoningCount(0);
+      let count = 0;
+      const intervalId = setInterval(() => {
+        if (count < 4) {
+          count++;
+          setVisibleRezoningCount(count);
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 800);
+
+      setTimeout(() => {
+        clearInterval(intervalId);
+        setIsActionProcessing(false);
+        setShowResultModal(true);
+      }, 4000);
     } else {
       setTimeout(() => {
         setIsActionProcessing(false);
@@ -311,7 +329,7 @@ export default function AutoLayoutWorkspace() {
       </div>
 
       <div className="alw-bottom-actions">
-        <button className="alw-btn-outline" onClick={() => setStep(1)}>再ゾーニング</button>
+        <button className="alw-btn-outline" onClick={() => handleAction('rezoning')}>再ゾーニング</button>
         
         <button className="alw-btn-green" onClick={() => handleAction('presen')}>プレゼン生成</button>
         <button className="alw-btn-green" onClick={() => handleAction('estimate')}>概算見積り出力</button>
@@ -525,15 +543,46 @@ export default function AutoLayoutWorkspace() {
         </div>
       )}
 
+      {/* 再ゾーニング生成用 特別ローディングオーバーレイ */}
+      {isActionProcessing && activeAction === 'rezoning' && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '48px', height: '48px', border: '4px solid #F43F5E', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '1.5rem' }}></div>
+          <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2.5rem', fontWeight: 700 }}>AI Generating Multiple Layouts...</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '900px' }}>
+            {[1, 2, 3, 4].map((_, idx) => (
+              <div key={idx} style={{ 
+                aspectRatio: '16/9', 
+                background: '#1E293B', 
+                borderRadius: '8px', 
+                overflow: 'hidden', 
+                opacity: idx < visibleRezoningCount ? 1 : 0.1, 
+                transform: idx < visibleRezoningCount ? 'scale(1)' : 'scale(0.95)', 
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: idx < visibleRezoningCount ? '0 10px 25px -5px rgba(244, 63, 94, 0.4)' : 'none',
+                border: idx < visibleRezoningCount ? '2px solid #F43F5E' : '2px solid transparent',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: `hue-rotate(${idx * 45}deg) opacity(0.8)`, background: 'white' }} alt="generating..." />
+                {idx < visibleRezoningCount && <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(0,0,0,0.7)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>Pattern {String.fromCharCode(65 + idx)}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* 結果モーダル */}
       {showResultModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.6)', zIndex: 1200, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
-          <div style={{ background: 'white', borderRadius: '12px', width: '100%', maxWidth: activeAction === 'image' ? '1000px' : '800px', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+          <div style={{ background: 'white', borderRadius: '12px', width: '100%', maxWidth: activeAction === 'image' || activeAction === 'rezoning' ? '1000px' : '800px', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
             <div style={{ padding: '1.5rem', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: 'white', zIndex: 10 }}>
               <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>
                 {activeAction === 'presen' && '生成完了：プレゼンテーション資料'}
                 {activeAction === 'estimate' && '生成完了：概算見積書'}
                 {activeAction === 'image' && '生成完了：3Dイメージ画像一覧'}
+                {activeAction === 'rezoning' && '生成完了：レイアウトパターン一覧'}
               </h2>
               <button 
                 onClick={() => setShowResultModal(false)}
@@ -543,7 +592,41 @@ export default function AutoLayoutWorkspace() {
               </button>
             </div>
 
-            {activeAction === 'image' ? (
+            {activeAction === 'rezoning' ? (
+              <div style={{ padding: '2rem', background: '#F9FAFB' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', marginBottom: '2rem' }}>
+                  {[1, 2, 3, 4].map((_, idx) => (
+                    <div key={idx} style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', background: 'white', border: '1px solid #E5E7EB', position: 'relative', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.borderColor = '#F43F5E'} onMouseOut={e => e.currentTarget.style.borderColor = '#E5E7EB'}>
+                      <div style={{ aspectRatio: '16/9', background: '#F8FAFC', padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <img src="/layout.png" style={{ width: '100%', height: '100%', objectFit: 'contain', filter: `hue-rotate(${idx * 45}deg)` }} alt={`pattern ${idx}`} />
+                      </div>
+                      <div style={{ padding: '1rem', borderTop: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white' }}>
+                        <div>
+                          <div style={{ fontSize: '1rem', color: '#1F2937', fontWeight: 700 }}>パターン {String.fromCharCode(65 + idx)}</div>
+                          <div style={{ fontSize: '0.8rem', color: '#6B7280', marginTop: '0.2rem' }}>
+                            {idx === 0 && 'バランス重視（標準）'}
+                            {idx === 1 && 'コミュニケーション重視'}
+                            {idx === 2 && '集中作業重視'}
+                            {idx === 3 && 'フリーアドレス最大化'}
+                          </div>
+                        </div>
+                        <button style={{ background: idx === 0 ? '#10B981' : 'white', color: idx === 0 ? 'white' : '#4B5563', border: idx === 0 ? 'none' : '1px solid #D1D5DB', borderRadius: '4px', padding: '0.4rem 1rem', fontSize: '0.85rem', fontWeight: 600, cursor: 'pointer' }}>
+                          {idx === 0 ? '適用中' : 'この案を適用'}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <button 
+                    onClick={() => setShowResultModal(false)}
+                    style={{ background: '#F43F5E', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
+                  >
+                    閉じる
+                  </button>
+                </div>
+              </div>
+            ) : activeAction === 'image' ? (
               <div style={{ padding: '2rem', background: '#F9FAFB' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
                   {MOCK_INTERIOR_IMAGES.map((src, idx) => (
