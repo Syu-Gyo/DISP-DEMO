@@ -88,6 +88,11 @@ export default function AutoLayoutWorkspace() {
         setIsActionProcessing(false);
         setShowResultModal(true);
       }, 4000);
+    } else if (actionType === 'presen') {
+      setTimeout(() => {
+        setIsActionProcessing(false);
+        setShowResultModal(true);
+      }, 4500);
     } else {
       setTimeout(() => {
         setIsActionProcessing(false);
@@ -304,12 +309,31 @@ export default function AutoLayoutWorkspace() {
         </div>
       )}
 
-      {/* 追加アクション処理中オーバーレイ */}
+      {/* プレゼン生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'presen' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)', zIndex: 1100, display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ width: '48px', height: '48px', border: '4px solid #FFF', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-          <div style={{ color: 'white', fontWeight: 700, letterSpacing: '0.1em' }}>
-            プレゼンテーション資料を生成中...
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+          <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ width: '24px', height: '24px', border: '3px solid #F59E0B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+            AI Generating Presentation...
+          </h2>
+          <div style={{ width: '100%', maxWidth: '700px', background: 'white', borderRadius: '8px', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '400px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)', overflow: 'hidden', position: 'relative' }}>
+            <div style={{ width: '60%', height: '24px', background: '#E2E8F0', borderRadius: '4px', animation: 'slideIn 0.5s ease-out forwards', opacity: 0 }}></div>
+            <div style={{ width: '80%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 0.3s forwards', opacity: 0 }}></div>
+            <div style={{ width: '70%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 0.6s forwards', opacity: 0 }}></div>
+            
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <div style={{ flex: 1, height: '150px', background: '#E2E8F0', borderRadius: '8px', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards', opacity: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#94A3B8', fontWeight: 'bold' }}>🖼️ Image Inserted</div>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ width: '100%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 1.2s forwards', opacity: 0 }}></div>
+                <div style={{ width: '90%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 1.4s forwards', opacity: 0 }}></div>
+                <div style={{ width: '95%', height: '16px', background: '#F1F5F9', borderRadius: '4px', animation: 'slideIn 0.5s ease-out 1.6s forwards', opacity: 0 }}></div>
+              </div>
+            </div>
+
+            <div style={{ width: '100%', height: '100px', background: '#E2E8F0', borderRadius: '8px', marginTop: '1rem', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 2s forwards', opacity: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#94A3B8', fontWeight: 'bold' }}>🎥 Video / 3D Walkthrough Inserted</div>
+
+            <div style={{ width: '50%', height: '16px', background: '#F1F5F9', borderRadius: '4px', marginTop: '1rem', animation: 'slideIn 0.5s ease-out 2.5s forwards', opacity: 0 }}></div>
+            <div style={{ width: '100%', height: '4px', background: '#38BDF8', borderRadius: '2px', position: 'absolute', bottom: 0, left: 0, animation: 'progressBar 4.5s linear forwards' }}></div>
           </div>
         </div>
       )}
@@ -411,23 +435,27 @@ export default function AutoLayoutWorkspace() {
                   <button style={{ background: '#10B981', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer' }}>CSV出力</button>
                 </div>
               </div>
-            ) : (
-              <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', background: '#F9FAFB' }}>
-                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>
-                  {activeAction === 'presen' && '📊'}
+            ) : activeAction === 'presen' ? (
+              <div style={{ padding: '0', background: '#E5E7EB', display: 'flex', flexDirection: 'column', height: '75vh' }}>
+                <div style={{ padding: '1rem 1.5rem', background: '#374151', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ fontWeight: 600 }}>提案資料_完成版.pptx</div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <button onClick={() => setShowResultModal(false)} style={{ background: 'transparent', color: 'white', border: '1px solid #6B7280', padding: '0.4rem 1.5rem', borderRadius: '4px', cursor: 'pointer', fontWeight: 600 }}>閉じる</button>
+                    <button style={{ background: '#F59E0B', color: 'white', border: 'none', padding: '0.4rem 1.5rem', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}>ダウンロード</button>
+                  </div>
                 </div>
-                <h3 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
-                  {activeAction === 'presen' && '提案用プレゼン資料（PPTX形式）が生成されました'}
-                </h3>
-                <p style={{ color: '#6B7280', marginBottom: '2rem' }}>※これはデモ画面です。本番環境ではここにプレビューやダウンロードボタンが表示されます。</p>
-                <button 
-                  onClick={() => setShowResultModal(false)}
-                  style={{ background: '#10B981', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
-                >
-                  閉じる
-                </button>
+                <div style={{ flex: 1, overflowY: 'auto', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2.5rem' }}>
+                  {/* スライド1枚目 */}
+                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                    <img src="/presen_mock.png" alt="プレゼン資料" style={{ width: '100%', display: 'block', minHeight: '400px', objectFit: 'cover' }} onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80'; }} />
+                  </div>
+                  {/* スライド2枚目ダミー */}
+                  <div style={{ width: '100%', maxWidth: '900px', background: 'white', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', borderRadius: '4px', height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#9ca3af', fontSize: '1.5rem', fontWeight: 'bold' }}>
+                    Slide 2 ...
+                  </div>
+                </div>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       )}
@@ -435,6 +463,9 @@ export default function AutoLayoutWorkspace() {
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.9); } 70% { opacity: 1; transform: scale(1.02); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes progressBar { 0% { width: 0%; } 100% { width: 100%; } }
       `}</style>
     </div>
   );
