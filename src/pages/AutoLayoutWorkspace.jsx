@@ -4,6 +4,15 @@ import { UploadCloud, CheckCircle, ArrowLeft } from 'lucide-react';
 import LeftSidebar from '../components/layout/LeftSidebar';
 import './AutoLayoutWorkspace.css';
 
+const MOCK_INTERIOR_IMAGES = [
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=400&q=80",
+  "https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=400&q=80"
+];
+
 export default function AutoLayoutWorkspace() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,14 +27,35 @@ export default function AutoLayoutWorkspace() {
   const [activeAction, setActiveAction] = useState(null);
   const [isActionProcessing, setIsActionProcessing] = useState(false);
   const [showResultModal, setShowResultModal] = useState(false);
+  const [selectedImageIndices, setSelectedImageIndices] = useState([]);
 
   const handleAction = (actionType) => {
     setActiveAction(actionType);
     setIsActionProcessing(true);
-    setTimeout(() => {
-      setIsActionProcessing(false);
-      setShowResultModal(true);
-    }, 2000);
+
+    if (actionType === 'image') {
+      setSelectedImageIndices([]);
+      let currentIndices = [];
+      const intervalId = setInterval(() => {
+        if (currentIndices.length < MOCK_INTERIOR_IMAGES.length) {
+          currentIndices.push(currentIndices.length);
+          setSelectedImageIndices([...currentIndices]);
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 500);
+
+      setTimeout(() => {
+        clearInterval(intervalId);
+        setIsActionProcessing(false);
+        setShowResultModal(true);
+      }, 4000);
+    } else {
+      setTimeout(() => {
+        setIsActionProcessing(false);
+        setShowResultModal(true);
+      }, 2000);
+    }
   };
 
   useEffect(() => {
@@ -237,13 +267,37 @@ export default function AutoLayoutWorkspace() {
       )}
 
       {/* 追加アクション処理中オーバーレイ */}
-      {isActionProcessing && (
+      {isActionProcessing && activeAction !== 'image' && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(8px)', zIndex: 1100, display: 'flex', flexDirection: 'column', gap: '1.5rem', justifyContent: 'center', alignItems: 'center' }}>
           <div style={{ width: '48px', height: '48px', border: '4px solid #FFF', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
           <div style={{ color: 'white', fontWeight: 700, letterSpacing: '0.1em' }}>
             {activeAction === 'presen' && 'プレゼンテーション資料を生成中...'}
             {activeAction === 'estimate' && '概算見積りデータを集計中...'}
-            {activeAction === 'image' && '3Dイメージ画像をレンダリング中...'}
+          </div>
+        </div>
+      )}
+
+      {/* イメージ画像生成用 特別ローディングオーバーレイ */}
+      {isActionProcessing && activeAction === 'image' && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: '48px', height: '48px', border: '4px solid #38BDF8', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '1.5rem' }}></div>
+          <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2.5rem', fontWeight: 700 }}>AI Rendering Perspectives...</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '900px' }}>
+            {MOCK_INTERIOR_IMAGES.map((src, idx) => (
+              <div key={idx} style={{ 
+                aspectRatio: '4/3', 
+                background: '#1E293B', 
+                borderRadius: '8px', 
+                overflow: 'hidden', 
+                opacity: selectedImageIndices.includes(idx) ? 1 : 0.1, 
+                transform: selectedImageIndices.includes(idx) ? 'scale(1)' : 'scale(0.95)', 
+                transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: selectedImageIndices.includes(idx) ? '0 10px 25px -5px rgba(56, 189, 248, 0.4)' : 'none',
+                border: selectedImageIndices.includes(idx) ? '2px solid #38BDF8' : '2px solid transparent'
+              }}>
+                <img src={src} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="generating..." />
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -251,12 +305,12 @@ export default function AutoLayoutWorkspace() {
       {/* 結果モーダル */}
       {showResultModal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.6)', zIndex: 1200, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
-          <div style={{ background: 'white', borderRadius: '12px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
-            <div style={{ padding: '1.5rem', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ background: 'white', borderRadius: '12px', width: '100%', maxWidth: activeAction === 'image' ? '1000px' : '800px', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
+            <div style={{ padding: '1.5rem', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: 'white', zIndex: 10 }}>
               <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>
                 {activeAction === 'presen' && '生成完了：プレゼンテーション資料'}
                 {activeAction === 'estimate' && '生成完了：概算見積書'}
-                {activeAction === 'image' && '生成完了：3Dイメージ画像'}
+                {activeAction === 'image' && '生成完了：3Dイメージ画像一覧'}
               </h2>
               <button 
                 onClick={() => setShowResultModal(false)}
@@ -265,25 +319,48 @@ export default function AutoLayoutWorkspace() {
                 &times;
               </button>
             </div>
-            <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', background: '#F9FAFB' }}>
-              <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>
-                {activeAction === 'presen' && '📊'}
-                {activeAction === 'estimate' && '💴'}
-                {activeAction === 'image' && '🖼️'}
+
+            {activeAction === 'image' ? (
+              <div style={{ padding: '2rem', background: '#F9FAFB' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+                  {MOCK_INTERIOR_IMAGES.map((src, idx) => (
+                    <div key={idx} style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', background: 'white' }}>
+                      <img src={src} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }} alt={`perspective ${idx + 1}`} />
+                      <div style={{ padding: '1rem', borderTop: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontSize: '0.875rem', color: '#4B5563', fontWeight: 600 }}>アングル {idx + 1}</span>
+                        <button style={{ background: 'white', border: '1px solid #D1D5DB', borderRadius: '4px', padding: '0.25rem 0.75rem', fontSize: '0.75rem', cursor: 'pointer' }}>保存</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <button 
+                    onClick={() => setShowResultModal(false)}
+                    style={{ background: '#10B981', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
+                  >
+                    閉じる
+                  </button>
+                </div>
               </div>
-              <h3 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
-                {activeAction === 'presen' && '提案用プレゼン資料（PPTX形式）が生成されました'}
-                {activeAction === 'estimate' && '概算見積書（PDF/Excel形式）が生成されました'}
-                {activeAction === 'image' && '高画質3Dパース画像（JPG形式）が生成されました'}
-              </h3>
-              <p style={{ color: '#6B7280', marginBottom: '2rem' }}>※これはデモ画面です。本番環境ではここにプレビューやダウンロードボタンが表示されます。</p>
-              <button 
-                onClick={() => setShowResultModal(false)}
-                style={{ background: '#10B981', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
-              >
-                閉じる
-              </button>
-            </div>
+            ) : (
+              <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', background: '#F9FAFB' }}>
+                <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>
+                  {activeAction === 'presen' && '📊'}
+                  {activeAction === 'estimate' && '💴'}
+                </div>
+                <h3 style={{ fontSize: '1.5rem', color: '#374151', marginBottom: '1rem' }}>
+                  {activeAction === 'presen' && '提案用プレゼン資料（PPTX形式）が生成されました'}
+                  {activeAction === 'estimate' && '概算見積書（PDF/Excel形式）が生成されました'}
+                </h3>
+                <p style={{ color: '#6B7280', marginBottom: '2rem' }}>※これはデモ画面です。本番環境ではここにプレビューやダウンロードボタンが表示されます。</p>
+                <button 
+                  onClick={() => setShowResultModal(false)}
+                  style={{ background: '#10B981', color: 'white', border: 'none', padding: '0.75rem 2rem', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '1rem' }}
+                >
+                  閉じる
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
