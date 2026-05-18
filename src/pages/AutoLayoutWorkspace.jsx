@@ -489,7 +489,7 @@ export default function AutoLayoutWorkspace() {
 
       {/* プレゼン生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'presen' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ padding: '3rem 2rem 2rem 2rem', flexShrink: 0, width: '100%', display: 'flex', justifyContent: 'center' }}>
             <h2 style={{ color: 'white', letterSpacing: '0.1em', margin: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <div style={{ width: '24px', height: '24px', border: '3px solid #F59E0B', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
@@ -504,7 +504,7 @@ export default function AutoLayoutWorkspace() {
 
       {/* 見積もり生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'estimate' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 9999, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
           <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ width: '24px', height: '24px', border: '3px solid #10B981', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
             AI Generating Estimate...
@@ -522,7 +522,7 @@ export default function AutoLayoutWorkspace() {
 
       {/* イメージ画像生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'image' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 9999, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '48px', height: '48px', border: '4px solid #38BDF8', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '1.5rem' }}></div>
           <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2.5rem', fontWeight: 700 }}>AI Rendering Perspectives...</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '900px' }}>
@@ -547,7 +547,7 @@ export default function AutoLayoutWorkspace() {
 
       {/* 再ゾーニング生成用 特別ローディングオーバーレイ */}
       {isActionProcessing && activeAction === 'rezoning' && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 1100, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.95)', backdropFilter: 'blur(10px)', zIndex: 9999, display: 'flex', flexDirection: 'column', padding: '3rem', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '48px', height: '48px', border: '4px solid #F43F5E', borderBottomColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '1.5rem' }}></div>
           <h2 style={{ color: 'white', letterSpacing: '0.1em', marginBottom: '2.5rem', fontWeight: 700 }}>AI Generating Multiple Layouts...</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem', width: '100%', maxWidth: '900px' }}>
@@ -577,7 +577,7 @@ export default function AutoLayoutWorkspace() {
 
       {/* 結果モーダル */}
       {showResultModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.6)', zIndex: 1200, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0, 0, 0, 0.6)', zIndex: 9999, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
           <div style={{ background: 'white', borderRadius: '12px', width: '100%', maxWidth: activeAction === 'image' || activeAction === 'rezoning' ? '1000px' : '800px', maxHeight: '90vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' }}>
             <div style={{ padding: '1.5rem', borderBottom: '1px solid #E5E7EB', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: 'white', zIndex: 10 }}>
               <h2 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>
